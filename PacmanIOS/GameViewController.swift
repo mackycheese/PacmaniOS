@@ -74,7 +74,7 @@ class GameViewController: UIViewController {
         }
 
         renderer = newRenderer
-
+        
         renderer.mtkView(mtkView, drawableSizeWillChange: mtkView.drawableSize)
 
         mtkView.delegate = renderer

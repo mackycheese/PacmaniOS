@@ -67,7 +67,7 @@ let gridH: Int = levelTiles[0].count
 
 var levelDots: [[Bool]] = Array(repeating: Array(repeating: false, count: gridH), count: gridW)
 var levelPowerDots: [[Bool]] = Array(repeating: Array(repeating: false, count: gridH), count: gridW)
-
+var levelScore: Int = 0
 func initLevel(){
     for x in 0..<gridW {
         for y in 0..<gridH {
@@ -79,4 +79,10 @@ func initLevel(){
             }
         }
     }
+    levelScore = 0
+    pauseTimer = gameStartPause
+    levelLives = 3
 }
+
+var pauseTimer: Int = 0
+var levelLives: Int = 0

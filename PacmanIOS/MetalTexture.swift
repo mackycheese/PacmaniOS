@@ -10,7 +10,7 @@ import Foundation
 import Metal
 import MetalKit
 
-class Texture {
+class MetalTexture {
     
     var path: String!
     var width: Int!

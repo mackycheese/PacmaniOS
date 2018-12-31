@@ -14,8 +14,6 @@ class SquareRenderer {
     static var pipelineState: MTLRenderPipelineState!
     static var texPipelineState: MTLRenderPipelineState!
     static var samplerState: MTLSamplerState!
-    static var width: Float!
-    static var height: Float!
     static func initSquare(device: MTLDevice!){
         let vertexData: [Float] = [
             0.0, 0.0, 0.0,
@@ -66,7 +64,7 @@ class SquareRenderer {
         encoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
         let pos: [Float] = [x, y]
         let size: [Float] = [w, h]
-        let wsize: [Float] = [width, height]
+        let wsize: [Float] = [screenW, screenH]
         let col: [Float] = [red, green, blue]
         let gsize: [Float] = [Float(gridW), Float(gridH)]
         encoder.setVertexBytes(pos, length: 2*MemoryLayout<Float>.stride, index: 1)
@@ -76,12 +74,12 @@ class SquareRenderer {
         encoder.setVertexBytes(gsize, length: 2*MemoryLayout<Float>.stride, index: 5)
         encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
     }
-    static func renderTex(tex: Texture, x:Float,y:Float,w:Float,h:Float,encoder:MTLRenderCommandEncoder){
+    static func renderTex(tex: MetalTexture, x:Float,y:Float,w:Float,h:Float,encoder:MTLRenderCommandEncoder){
         encoder.setRenderPipelineState(texPipelineState)
         encoder.setVertexBuffer(vertexBuffer,offset:0,index:0)
         let pos: [Float] = [x, y]
         let size: [Float] = [w, h]
-        let wsize: [Float] = [width, height]
+        let wsize: [Float] = [screenW, screenH]
         let col: [Float] = [0,0,0]
         let gsize: [Float] = [Float(gridW), Float(gridH)]
         encoder.setVertexBytes(pos, length: 2*MemoryLayout<Float>.stride, index: 1)

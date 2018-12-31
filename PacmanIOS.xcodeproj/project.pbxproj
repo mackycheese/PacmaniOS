@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A351F5B21D9AAA800D038D8 /* MetalText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A351F5A21D9AAA800D038D8 /* MetalText.swift */; };
+		5A351F5D21D9AC6900D038D8 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A351F5C21D9AC6900D038D8 /* StringExtension.swift */; };
 		5A37E75B21D850F2001323B2 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E75A21D850F2001323B2 /* Level.swift */; };
 		5A37E75D21D86656001323B2 /* Dir.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E75C21D86656001323B2 /* Dir.swift */; };
 		5A37E75F21D86813001323B2 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E75E21D86813001323B2 /* Entity.swift */; };
@@ -17,7 +19,7 @@
 		5A37E76921D8870A001323B2 /* GhostPinky.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E76821D8870A001323B2 /* GhostPinky.swift */; };
 		5A37E76B21D88740001323B2 /* GhostInky.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E76A21D88740001323B2 /* GhostInky.swift */; };
 		5A37E76D21D887A2001323B2 /* GhostClyde.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E76C21D887A2001323B2 /* GhostClyde.swift */; };
-		5A37E76F21D98768001323B2 /* Texture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E76E21D98768001323B2 /* Texture.swift */; };
+		5A37E76F21D98768001323B2 /* MetalTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E76E21D98768001323B2 /* MetalTexture.swift */; };
 		5A37E77321D98FCF001323B2 /* level1.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A37E77221D98FCE001323B2 /* level1.png */; };
 		5A37E77521D99008001323B2 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 5A37E77421D99008001323B2 /* assets */; };
 		5A37E77721D9952E001323B2 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E77621D9952E001323B2 /* Animator.swift */; };
@@ -32,6 +34,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5A351F5A21D9AAA800D038D8 /* MetalText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalText.swift; sourceTree = "<group>"; };
+		5A351F5C21D9AC6900D038D8 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		5A37E75A21D850F2001323B2 /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		5A37E75C21D86656001323B2 /* Dir.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dir.swift; sourceTree = "<group>"; };
 		5A37E75E21D86813001323B2 /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
@@ -42,7 +46,7 @@
 		5A37E76821D8870A001323B2 /* GhostPinky.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostPinky.swift; sourceTree = "<group>"; };
 		5A37E76A21D88740001323B2 /* GhostInky.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostInky.swift; sourceTree = "<group>"; };
 		5A37E76C21D887A2001323B2 /* GhostClyde.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostClyde.swift; sourceTree = "<group>"; };
-		5A37E76E21D98768001323B2 /* Texture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Texture.swift; sourceTree = "<group>"; };
+		5A37E76E21D98768001323B2 /* MetalTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalTexture.swift; sourceTree = "<group>"; };
 		5A37E77221D98FCE001323B2 /* level1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = level1.png; path = assets/level1.png; sourceTree = "<group>"; };
 		5A37E77421D99008001323B2 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		5A37E77621D9952E001323B2 /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
@@ -72,7 +76,6 @@
 		5A81C00821D81F610012530F = {
 			isa = PBXGroup;
 			children = (
-				5A37E77621D9952E001323B2 /* Animator.swift */,
 				5A81C01321D81F610012530F /* PacmanIOS */,
 				5A81C01221D81F610012530F /* Products */,
 			);
@@ -89,9 +92,12 @@
 		5A81C01321D81F610012530F /* PacmanIOS */ = {
 			isa = PBXGroup;
 			children = (
+				5A351F5A21D9AAA800D038D8 /* MetalText.swift */,
+				5A351F5C21D9AC6900D038D8 /* StringExtension.swift */,
+				5A37E77621D9952E001323B2 /* Animator.swift */,
 				5A81C01421D81F610012530F /* AppDelegate.swift */,
 				5A81C01721D81F610012530F /* Renderer.swift */,
-				5A37E76E21D98768001323B2 /* Texture.swift */,
+				5A37E76E21D98768001323B2 /* MetalTexture.swift */,
 				5A37E76621D885C8001323B2 /* GhostBlinky.swift */,
 				5A37E75E21D86813001323B2 /* Entity.swift */,
 				5A37E76021D869C1001323B2 /* Player.swift */,
@@ -197,12 +203,14 @@
 				5A37E76D21D887A2001323B2 /* GhostClyde.swift in Sources */,
 				5A37E76521D870A2001323B2 /* Config.swift in Sources */,
 				5A37E75F21D86813001323B2 /* Entity.swift in Sources */,
-				5A37E76F21D98768001323B2 /* Texture.swift in Sources */,
+				5A37E76F21D98768001323B2 /* MetalTexture.swift in Sources */,
 				5A37E75D21D86656001323B2 /* Dir.swift in Sources */,
+				5A351F5B21D9AAA800D038D8 /* MetalText.swift in Sources */,
 				5A98C75421D82A1F00437E3B /* SquareRenderer.swift in Sources */,
 				5A37E76321D86F70001323B2 /* Ghost.swift in Sources */,
 				5A37E77721D9952E001323B2 /* Animator.swift in Sources */,
 				5A37E76121D869C1001323B2 /* Player.swift in Sources */,
+				5A351F5D21D9AC6900D038D8 /* StringExtension.swift in Sources */,
 				5A37E76921D8870A001323B2 /* GhostPinky.swift in Sources */,
 				5A98C75621D82B3D00437E3B /* Shaders.metal in Sources */,
 			);

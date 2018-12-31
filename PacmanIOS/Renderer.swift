@@ -10,7 +10,7 @@
 
 import Metal
 import MetalKit
-import simd
+import UIKit
 
 class Renderer: NSObject, MTKViewDelegate {
     
@@ -19,6 +19,8 @@ class Renderer: NSObject, MTKViewDelegate {
     var metalLayer: CAMetalLayer!
     var commandQueue: MTLCommandQueue!
     var textureLoader: MTKTextureLoader
+    
+    var scoreText: MetalText!
     
     let startTime = NSDate().timeIntervalSince1970
     
@@ -32,7 +34,8 @@ class Renderer: NSObject, MTKViewDelegate {
     var inky: GhostInky!
     var clyde: GhostClyde!
     
-    var levelTex: Texture!
+    var levelTex: MetalTexture!
+    var lifeTex: MetalTexture!
     
     init?(metalKitView: MTKView) {
         self.device = metalKitView.device!
@@ -44,7 +47,10 @@ class Renderer: NSObject, MTKViewDelegate {
         inky = GhostInky(device: device)
         clyde = GhostClyde(device: device)
         
-        levelTex = Texture(device: device, name: "assets/level1", ext: "png", factor: 5)
+        scoreText = MetalText(device: device)
+        
+        levelTex = MetalTexture(device: device, name: "assets/level1", ext: "png", factor: 1)
+        lifeTex = MetalTexture(device: device, name: "assets/life", ext: "png")
         
         commandQueue = device.makeCommandQueue()
         
@@ -108,26 +114,53 @@ class Renderer: NSObject, MTKViewDelegate {
         }
         
         player.render(renderEncoder!)
-        player.update(blinky: blinky, pinky: pinky, inky: inky, clyde: clyde)
-        
+
         blinky.render(renderEncoder!)
-        blinky.update(player, blinky)
         
         pinky.render(renderEncoder!)
-        pinky.update(player, blinky)
         
         inky.render(renderEncoder!)
-        inky.update(player, blinky)
         
         clyde.render(renderEncoder!)
-        clyde.update(player, blinky)
         
+        scoreText.setText(device: device, s: "SCORE "+String(levelScore))
+        scoreText.render(x: -1, y: 1-textSize, w: textSize, h: textSize, encoder: renderEncoder!)
         
-        //TODO: Dots, power dots, pacman die, pacman win, textures, animations, logo (set to the logo extracted in the python pygame pacman project, logo.png), score, UI menus
+        let highScore: Int = UserDefaults.standard.integer(forKey: "PACMAN_HIGHSCORE")
+        UserDefaults.standard.set(max(levelScore,highScore), forKey: "PACMAN_HIGHSCORE")
+        
+        let highScoreStr: String = "HIGH SCORE "+String(highScore)
+        scoreText.setText(device: device, s: highScoreStr)
+        scoreText.render(x: 1-textSize*Float(highScoreStr.count),y:1-textSize,w:textSize,h:textSize,encoder:renderEncoder!)
+
+        if pauseTimer < 0 && levelLives > 0 {
+            player.update(blinky: blinky, pinky: pinky, inky: inky, clyde: clyde)
+            blinky.update(player, blinky)
+            pinky.update(player, blinky)
+            inky.update(player, blinky)
+            clyde.update(player, blinky)
+        }
+        
+        if levelLives <= 0 && pauseTimer < 0 {
+            initLevel()
+            player.justDied=false
+            pauseTimer = gameStartPause
+        }
+        
+        if levelLives > 0 {
+            for i in 0..<levelLives {
+                SquareRenderer.renderTex(tex: lifeTex, x: 0+lifeSize*Float(i), y: 1-lifeSize, w: lifeSize, h: lifeSize, encoder: renderEncoder!)
+            }
+        }
+        
+
+        // TODO: Pacman death animation, pacman win animation, score, UI menus, high score 
         
         renderEncoder?.endEncoding()
         commandBuffer?.present(drawable)
         commandBuffer?.commit()
+        
+        pauseTimer -= 1
     }
     
     func swipe(_ dir: Dir){
@@ -137,8 +170,8 @@ class Renderer: NSObject, MTKViewDelegate {
     
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         /// Respond to drawable size or orientation changes here
-        SquareRenderer.width = Float(size.width)
-        SquareRenderer.height = Float(size.height)
+        screenW = Float(size.width)
+        screenH = Float(size.height)
         metalLayer.frame = view.layer.frame
     }
 }

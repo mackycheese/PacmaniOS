@@ -44,9 +44,6 @@ class Ghost: Entity {
             }
         }
         anim?.render(gx: gx, gy: gy, offx: offx, offy: offy, dir: dir, encoder: encoder)
-        self.anim.step()
-        self.animBlue.step()
-        self.animWhite.step()
     }
     
     func getName() -> String {
@@ -92,6 +89,9 @@ class Ghost: Entity {
     }
     
     func update(_ player: Player, _ blinky: Ghost){
+        self.anim.step()
+        self.animBlue.step()
+        self.animWhite.step()
         if scared {
             speed=ghostScaredSpeed
             scaredTimer-=1
