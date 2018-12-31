@@ -20,9 +20,9 @@
 		5A37E76B21D88740001323B2 /* GhostInky.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E76A21D88740001323B2 /* GhostInky.swift */; };
 		5A37E76D21D887A2001323B2 /* GhostClyde.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E76C21D887A2001323B2 /* GhostClyde.swift */; };
 		5A37E76F21D98768001323B2 /* MetalTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E76E21D98768001323B2 /* MetalTexture.swift */; };
-		5A37E77321D98FCF001323B2 /* level1.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A37E77221D98FCE001323B2 /* level1.png */; };
 		5A37E77521D99008001323B2 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 5A37E77421D99008001323B2 /* assets */; };
 		5A37E77721D9952E001323B2 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E77621D9952E001323B2 /* Animator.swift */; };
+		5A462C5A21DAC16D0083ECBE /* MetalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A462C5921DAC16D0083ECBE /* MetalButton.swift */; };
 		5A81C01521D81F610012530F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A81C01421D81F610012530F /* AppDelegate.swift */; };
 		5A81C01821D81F610012530F /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A81C01721D81F610012530F /* Renderer.swift */; };
 		5A81C01A21D81F610012530F /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A81C01921D81F610012530F /* GameViewController.swift */; };
@@ -47,9 +47,9 @@
 		5A37E76A21D88740001323B2 /* GhostInky.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostInky.swift; sourceTree = "<group>"; };
 		5A37E76C21D887A2001323B2 /* GhostClyde.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GhostClyde.swift; sourceTree = "<group>"; };
 		5A37E76E21D98768001323B2 /* MetalTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalTexture.swift; sourceTree = "<group>"; };
-		5A37E77221D98FCE001323B2 /* level1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = level1.png; path = assets/level1.png; sourceTree = "<group>"; };
 		5A37E77421D99008001323B2 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		5A37E77621D9952E001323B2 /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
+		5A462C5921DAC16D0083ECBE /* MetalButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalButton.swift; sourceTree = "<group>"; };
 		5A81C01121D81F610012530F /* PacmanIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PacmanIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A81C01421D81F610012530F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5A81C01721D81F610012530F /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
@@ -93,21 +93,21 @@
 			isa = PBXGroup;
 			children = (
 				5A351F5A21D9AAA800D038D8 /* MetalText.swift */,
+				5A37E76E21D98768001323B2 /* MetalTexture.swift */,
+				5A462C5921DAC16D0083ECBE /* MetalButton.swift */,
 				5A351F5C21D9AC6900D038D8 /* StringExtension.swift */,
 				5A37E77621D9952E001323B2 /* Animator.swift */,
 				5A81C01421D81F610012530F /* AppDelegate.swift */,
 				5A81C01721D81F610012530F /* Renderer.swift */,
-				5A37E76E21D98768001323B2 /* MetalTexture.swift */,
-				5A37E76621D885C8001323B2 /* GhostBlinky.swift */,
 				5A37E75E21D86813001323B2 /* Entity.swift */,
 				5A37E76021D869C1001323B2 /* Player.swift */,
 				5A37E76221D86F70001323B2 /* Ghost.swift */,
+				5A37E76621D885C8001323B2 /* GhostBlinky.swift */,
 				5A37E76821D8870A001323B2 /* GhostPinky.swift */,
 				5A37E76A21D88740001323B2 /* GhostInky.swift */,
-				5A37E77421D99008001323B2 /* assets */,
 				5A37E76C21D887A2001323B2 /* GhostClyde.swift */,
+				5A37E77421D99008001323B2 /* assets */,
 				5A37E76421D870A2001323B2 /* Config.swift */,
-				5A37E77221D98FCE001323B2 /* level1.png */,
 				5A81C01921D81F610012530F /* GameViewController.swift */,
 				5A37E75C21D86656001323B2 /* Dir.swift */,
 				5A81C01D21D81F610012530F /* Main.storyboard */,
@@ -182,7 +182,6 @@
 				5A37E77521D99008001323B2 /* assets in Resources */,
 				5A81C02421D81F620012530F /* LaunchScreen.storyboard in Resources */,
 				5A81C02121D81F620012530F /* Assets.xcassets in Resources */,
-				5A37E77321D98FCF001323B2 /* level1.png in Resources */,
 				5A81C01F21D81F610012530F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -201,6 +200,7 @@
 				5A81C01A21D81F610012530F /* GameViewController.swift in Sources */,
 				5A81C01521D81F610012530F /* AppDelegate.swift in Sources */,
 				5A37E76D21D887A2001323B2 /* GhostClyde.swift in Sources */,
+				5A462C5A21DAC16D0083ECBE /* MetalButton.swift in Sources */,
 				5A37E76521D870A2001323B2 /* Config.swift in Sources */,
 				5A37E75F21D86813001323B2 /* Entity.swift in Sources */,
 				5A37E76F21D98768001323B2 /* MetalTexture.swift in Sources */,

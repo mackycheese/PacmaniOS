@@ -11,6 +11,8 @@
 import Metal
 import MetalKit
 import UIKit
+import CoreMotion
+import AVFoundation
 
 class Renderer: NSObject, MTKViewDelegate {
     
@@ -18,7 +20,9 @@ class Renderer: NSObject, MTKViewDelegate {
     
     var metalLayer: CAMetalLayer!
     var commandQueue: MTLCommandQueue!
-    var textureLoader: MTKTextureLoader
+    var textureLoader: MTKTextureLoader!
+    
+    var motionManager: CMMotionManager!
     
     var scoreText: MetalText!
     
@@ -37,15 +41,37 @@ class Renderer: NSObject, MTKViewDelegate {
     var levelTex: MetalTexture!
     var lifeTex: MetalTexture!
     
+    var btnTiltToTurn: MetalButton!
+    
+    
     init?(metalKitView: MTKView) {
+//        try! AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+        try! AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: .mixWithOthers)
+        try! AVAudioSession.sharedInstance().setActive(true)
+        
         self.device = metalKitView.device!
-        initLevel()
+        initLevel(resetScore: true)
+        
+        motionManager = CMMotionManager()
+        
+        guard motionManager.isAccelerometerAvailable else { print("Accelerometer is not available."); super.init(); exit(1); }
+//        guard motionManager.isAccelerometerActive else { print("Accelerometer is not active."); super.init(); exit(1); }
+        guard motionManager.isGyroAvailable else { print("Gyrometer is not available."); super.init(); exit(1); }
+        
+        motionManager.startAccelerometerUpdates()
+        motionManager.startGyroUpdates()
+        motionManager.startDeviceMotionUpdates()
         
         player = Player(device: device)
         blinky = GhostBlinky(device: device)
         pinky = GhostPinky(device: device)
         inky = GhostInky(device: device)
         clyde = GhostClyde(device: device)
+        
+        btnTiltToTurn=MetalButton(device: device)
+        btnTiltToTurn.setText(device: device, "YOU SHOULD NOT SEE THIS TEXT")
+        btnTiltToTurn.setState(on: false)
+        btnTiltToTurn.setBounds(x: 0, y: 0, w: uiSize, h: uiSize)
         
         scoreText = MetalText(device: device)
         
@@ -71,7 +97,34 @@ class Renderer: NSObject, MTKViewDelegate {
         
     }
     
+    func handleTilt() {
+        let accRate: CMAcceleration = (motionManager.accelerometerData?.acceleration)!
+        let x: Float = Float(accRate.x)
+        let y: Float = Float(accRate.y)
+        let amount: Float = 0.2
+        //        let dm: CMDeviceMotion = motionManager.deviceMotion?.attitude
+        if x < -amount {
+            player.nextDir = .l
+        }
+        if x > amount {
+            player.nextDir = .r
+        }
+        if y > amount {
+            player.nextDir = .u
+        }
+        if y < -amount {
+            player.nextDir = .d
+        }
+    }
+    
     func draw(in view: MTKView) {
+//        print(motionManager.gyroData?.rotationRate)
+//        let rotRate: CMRotationRate = (motionManager.gyroData?.rotationRate)!
+//        let x: Float = Float(rotRate.x)
+//        let x: Float = Float(rotRate.y)
+        if btnTiltToTurn.isOn {
+            handleTilt()
+        }
         guard let drawable = metalLayer.nextDrawable() else { return }
         let renderPassDescriptor = MTLRenderPassDescriptor()
         renderPassDescriptor.colorAttachments[0].texture = drawable.texture
@@ -142,7 +195,7 @@ class Renderer: NSObject, MTKViewDelegate {
         }
         
         if levelLives <= 0 && pauseTimer < 0 {
-            initLevel()
+            initLevel(resetScore: true)
             player.justDied=false
             player.onInitLevel()
 //            scoreText.setText(device: device, s: "SCORE 0")
@@ -157,6 +210,13 @@ class Renderer: NSObject, MTKViewDelegate {
         }
         
 
+        btnTiltToTurn.render(encoder: renderEncoder!)
+        
+        if btnTiltToTurn.isOn {
+            btnTiltToTurn.setText(device: device, "TILT TO TURN  Y")
+        } else {
+            btnTiltToTurn.setText(device: device, "TILT TO TURN  N")
+        }
         // MARK: TODO: Pacman death animation, pacman win animation, score, UI menus, high score, sound effects, fix score buffers
         
         renderEncoder?.endEncoding()
@@ -164,11 +224,28 @@ class Renderer: NSObject, MTKViewDelegate {
         commandBuffer?.commit()
         
         pauseTimer -= 1
+        behaviourTimer -= 1
+        if behaviourTimer < 0 {
+            if scatterMode {
+                scatterMode = false
+                behaviourTimer = timeChase
+            } else {
+                scatterMode = true
+                behaviourTimer = timeScatter
+            }
+        }
+        
     }
     
     func swipe(_ dir: Dir){
         print("Swipe with dir \(dir)")
         player.nextDir = dir
+    }
+    
+    func tap(x: Float, y: Float) {
+        if btnTiltToTurn.containsPoint(x, y) {
+            btnTiltToTurn.toggle()
+        }
     }
     
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {

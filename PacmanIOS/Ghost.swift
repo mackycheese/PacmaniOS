@@ -8,6 +8,7 @@
 
 import Foundation
 import Metal
+import AVFoundation
 
 class Ghost: Entity {
     //player: 15,17
@@ -24,6 +25,7 @@ class Ghost: Entity {
         animWhite=Animator(device: device, name: "ghostwhite", numFrames: 2, speed: ghostScaredAnimSpeed)
         animBlue=Animator(device: device, name: "ghostblue", numFrames: 2, speed: ghostScaredAnimSpeed)
     }
+    
     
     var anim: Animator!
     var animWhite: Animator!
@@ -88,6 +90,10 @@ class Ghost: Entity {
         offy=0
     }
     
+    func getCorner()->[Int]{
+        return [-1,-1]
+    }
+    
     func update(_ player: Player, _ blinky: Ghost){
         self.anim.step()
         self.animBlue.step()
@@ -127,6 +133,9 @@ class Ghost: Entity {
         }else{
             if(offx==0&&offy==0){
                 var target=getTarget(player, blinky)
+                if scatterMode {
+                    target = getCorner()
+                }
                 if enterTimer>0{
                     target=[  Int.random(in: -100...100), Int.random(in: -100...100)  ]
                 }

@@ -18,6 +18,10 @@ class GhostInky: Ghost {
         return "inky"
     }
     
+    override func getCorner() -> [Int] {
+        return [gridW,gridH]
+    }
+    
     override func getTarget(_ player: Player, _ blinky: Ghost) -> [Int] {
         let px: Int = player.gx+2*player.dir.getX()
         let py: Int = player.gy+2*player.dir.getY()

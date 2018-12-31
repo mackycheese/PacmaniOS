@@ -53,8 +53,8 @@ class MetalText {
         posData = []
         uvData = []
         var x: Float = 0
-        var y: Float = 0
-        var du: Float = 1.0/37.0
+        let y: Float = 0
+        let du: Float = 1.0/37.0
         for i in 0..<str.count {
             let c: Character = str.charAt(at: i)
             var tx: Float = -1

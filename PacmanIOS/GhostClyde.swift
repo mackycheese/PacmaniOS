@@ -18,6 +18,10 @@ class GhostClyde: Ghost {
         return "clyde"
     }
     
+    override func getCorner() -> [Int] {
+        return [0,gridH]
+    }
+    
     override func getTarget(_ player: Player, _ blinky: Ghost) -> [Int] {
         let px: Float = Float(player.gx)
         let py: Float = Float(player.gy)

@@ -68,7 +68,7 @@ let gridH: Int = levelTiles[0].count
 var levelDots: [[Bool]] = Array(repeating: Array(repeating: false, count: gridH), count: gridW)
 var levelPowerDots: [[Bool]] = Array(repeating: Array(repeating: false, count: gridH), count: gridW)
 var levelScore: Int = 0
-func initLevel(){
+func initLevel(resetScore: Bool){
     for x in 0..<gridW {
         for y in 0..<gridH {
             if levelTiles[x][y] == DOT {
@@ -79,10 +79,16 @@ func initLevel(){
             }
         }
     }
-    levelScore = 0
+    if resetScore {
+        levelScore = 0
+    }
     pauseTimer = gameStartPause
     levelLives = 3
+    behaviourTimer = timeChase
+    scatterMode = false
 }
 
 var pauseTimer: Int = 0
 var levelLives: Int = 0
+var behaviourTimer: Int = 0
+var scatterMode: Bool = false

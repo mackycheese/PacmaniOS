@@ -34,6 +34,17 @@ class GameViewController: UIViewController {
             print("Undefined swipe")
         }
     }
+    
+    @objc public func onTap(_ sender: UITapGestureRecognizer) {
+        if sender.state == .ended {
+            let point: CGPoint = sender.location(in: view)
+            let gameTop: Float = (screenH - screenW)*0.25
+            let x: Float = Float(point.x) / screenW*2
+            let y: Float = (gameTop - Float(point.y))/screenW*2
+            renderer.tap(x: x, y: y)
+            print("Tap at \(x),\(y) with gameTop=\(gameTop)")
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +64,9 @@ class GameViewController: UIViewController {
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(GameViewController.onSwipe))
         swipeDown.direction = .down
         view.addGestureRecognizer(swipeDown)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(GameViewController.onTap))
+        view.addGestureRecognizer(tap)
         
         guard let mtkView = view as? MTKView else {
             print("View of Gameview controller is not an MTKView")

@@ -8,6 +8,7 @@
 
 import Foundation
 import Metal
+import AVFoundation
 
 class Player: Entity {
     
@@ -19,7 +20,15 @@ class Player: Entity {
         bonusAmount = 0
         anim=Animator(device: device, name: "pacman", numFrames: 2, speed: playerAnimSpeed)
         animDie=Animator(device: device, name: "pacman-die", numFrames: 12, speed: 12/Float(gameDiePause), nodir: true)
+        
+        audioEat = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "assets/sound/waza",withExtension:"mp3")!)
+        audioEatGhost = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "assets/sound/eat-ghost", withExtension: "mp3")!)
+        audioEatPill = try! AVAudioPlayer(contentsOf: Bundle.main.url(forResource: "assets/sound/eat-pill", withExtension: "mp3")!)
     }
+    
+    var audioEat: AVAudioPlayer!
+    var audioEatGhost: AVAudioPlayer!
+    var audioEatPill: AVAudioPlayer!
     
     var anim: Animator!
     var animDie: Animator!
@@ -74,6 +83,7 @@ class Player: Entity {
             levelDots[gx][gy] = false
             possibleToWin = true
             levelScore += scoreIncreaseDot
+//            audioEat.play()
         }
         if levelPowerDots[gx][gy] {
             levelPowerDots[gx][gy] = false
@@ -84,6 +94,7 @@ class Player: Entity {
             bonusAmount=200
             possibleToWin = true
             levelScore += scoreIncreasePowerPellet
+            audioEatPill.play()
         }
         if possibleToWin {
             var dotsRemaining: Bool = false
@@ -93,7 +104,7 @@ class Player: Entity {
                 }
             }
             if !dotsRemaining {
-                initLevel()
+                initLevel(resetScore: false)
                 die(blinky: blinky, pinky: pinky, inky: inky, clyde: clyde)
                 pauseTimer = gameStartPause
             }
@@ -107,6 +118,7 @@ class Player: Entity {
                     pauseTimer = playerPauseEatGhost
                     levelScore+=bonusAmount
                     bonusAmount*=2
+                    audioEatGhost.play()
                 }else {
                     die(blinky: blinky, pinky: pinky, inky: inky, clyde: clyde)
                     levelLives-=1

@@ -18,6 +18,11 @@ let playerPauseEatGhost: Int = 20
 let gameStartPause: Int = 100
 let gameDiePause: Int = 200
 
+let timeChase: Int = 300
+let timeScatter: Int = 50
+
+let uiSize: Float = 0.05
+
 let playerAnimSpeed: Float = 0.2
 let ghostAnimSpeed: Float = 0.2
 let ghostScaredAnimSpeed: Float = 0.1
