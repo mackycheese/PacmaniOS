@@ -145,6 +145,8 @@ class Renderer: NSObject, MTKViewDelegate {
             initLevel()
             player.justDied=false
             player.onInitLevel()
+//            scoreText.setText(device: device, s: "SCORE 0")
+            levelScore = 0
             pauseTimer = gameStartPause
         }
         
@@ -155,7 +157,7 @@ class Renderer: NSObject, MTKViewDelegate {
         }
         
 
-        // TODO: Pacman death animation, pacman win animation, score, UI menus, high score 
+        // MARK: TODO: Pacman death animation, pacman win animation, score, UI menus, high score, sound effects, fix score buffers
         
         renderEncoder?.endEncoding()
         commandBuffer?.present(drawable)

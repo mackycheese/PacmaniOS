@@ -12,10 +12,12 @@ import Metal
 class MetalText {
     var atlas: MetalTexture!
     var str: String!
-    var posBuffer: MTLBuffer!
-    var uvBuffer: MTLBuffer!
+//    var posBuffer: MTLBuffer!
+//    var uvBuffer: MTLBuffer!
     var samplerState: MTLSamplerState!
     var pipelineState: MTLRenderPipelineState!
+    var posData: [Float] = []
+    var uvData: [Float] = []
     
     init(device: MTLDevice) {
         atlas = MetalTexture(device: device, name: "assets/font", ext: "png")
@@ -40,12 +42,16 @@ class MetalText {
         sampler.lodMinClamp = 0
         sampler.lodMaxClamp = .greatestFiniteMagnitude
         samplerState = device.makeSamplerState(descriptor: sampler)
+        
+//        posBuffer = device.makeBuffer(length: 0, options: [])
+//        uvBuffer = device.makeBuffer(length: 0, options: [])
     }
     
     func setText(device: MTLDevice, s: String) {
+        //This just writes over the first n characters, leaving the rest untouched
         str = s
-        var posData: [Float] = []
-        var uvData: [Float] = []
+        posData = []
+        uvData = []
         var x: Float = 0
         var y: Float = 0
         var du: Float = 1.0/37.0
@@ -151,15 +157,17 @@ class MetalText {
             x+=1
         }
         
-        let floatSize = MemoryLayout<Float>.stride
-        posBuffer = device.makeBuffer(bytes: posData, length: floatSize*posData.count, options: [])
-        uvBuffer = device.makeBuffer(bytes: uvData, length: floatSize*uvData.count, options: [])
+//        let floatSize = MemoryLayout<Float>.stride
+//        posBuffer = device.makeBuffer(bytes: posData, length: floatSize*posData.count, options: [])
+//        uvBuffer = device.makeBuffer(bytes: uvData, length: floatSize*uvData.count, options: [])
     }
     
     func render(x:Float,y:Float,w:Float,h:Float,encoder:MTLRenderCommandEncoder) {
         encoder.setRenderPipelineState(pipelineState)
-        encoder.setVertexBuffer(posBuffer, offset: 0, index: 0)
-        encoder.setVertexBuffer(uvBuffer, offset: 0, index: 1)
+//        encoder.setVertexBuffer(posBuffer, offset: 0, index: 0)
+//        encoder.setVertexBuffer(uvBuffer, offset: 0, index: 1)
+        encoder.setVertexBytes(posData, length: posData.count*MemoryLayout<Float>.stride, index: 0)
+        encoder.setVertexBytes(uvData, length: uvData.count*MemoryLayout<Float>.stride, index: 1)
         
         let pos: [Float] = [x,y]
         let size: [Float] = [w,h]
@@ -171,7 +179,8 @@ class MetalText {
         
         encoder.setFragmentTexture(atlas.texture, index: 0)
         encoder.setFragmentSamplerState(samplerState, index: 0)
-        encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: posBuffer.length/MemoryLayout<Float>.size)
+//        encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: posBuffer.length/MemoryLayout<Float>.size)
+        encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: posData.count/2)
     }
     
 }
