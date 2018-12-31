@@ -65,3 +65,18 @@ let levelTiles: [[Int]] = transpose(levelTilesTransposed)
 let gridW: Int = levelTiles.count
 let gridH: Int = levelTiles[0].count
 
+var levelDots: [[Bool]] = Array(repeating: Array(repeating: false, count: gridH), count: gridW)
+var levelPowerDots: [[Bool]] = Array(repeating: Array(repeating: false, count: gridH), count: gridW)
+
+func initLevel(){
+    for x in 0..<gridW {
+        for y in 0..<gridH {
+            if levelTiles[x][y] == DOT {
+                levelDots[x][y] = true
+            }
+            if levelTiles[x][y] == POWER_PELLET {
+                levelPowerDots[x][y] = true
+            }
+        }
+    }
+}

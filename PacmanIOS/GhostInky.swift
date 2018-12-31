@@ -14,6 +14,10 @@ class GhostInky: Ghost {
         return ghostEnterTimeInky
     }
     
+    override func getName() -> String {
+        return "inky"
+    }
+    
     override func getTarget(_ player: Player, _ blinky: Ghost) -> [Int] {
         let px: Int = player.gx+2*player.dir.getX()
         let py: Int = player.gy+2*player.dir.getY()
@@ -22,10 +26,6 @@ class GhostInky: Ghost {
         let dx: Int = px-bx
         let dy: Int = py-by
         return [bx+2*dx,by+2*dy]
-    }
-    
-    override func getGhostColor() -> [Float] {
-        return [0,1,1]
     }
     
 }

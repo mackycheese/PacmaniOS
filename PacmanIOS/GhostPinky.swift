@@ -10,8 +10,8 @@ import Foundation
 
 class GhostPinky: Ghost {
     
-    override func getGhostColor() -> [Float] {
-        return [1,0,1]
+    override func getName() -> String {
+        return "pinky"
     }
     
     override func getEnterTime() -> Int {

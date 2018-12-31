@@ -32,14 +32,19 @@ class Renderer: NSObject, MTKViewDelegate {
     var inky: GhostInky!
     var clyde: GhostClyde!
     
+    var levelTex: Texture!
+    
     init?(metalKitView: MTKView) {
         self.device = metalKitView.device!
+        initLevel()
         
-        player = Player()
-        blinky = GhostBlinky()
-        pinky = GhostPinky()
-        inky = GhostInky()
-        clyde = GhostClyde()
+        player = Player(device: device)
+        blinky = GhostBlinky(device: device)
+        pinky = GhostPinky(device: device)
+        inky = GhostInky(device: device)
+        clyde = GhostClyde(device: device)
+        
+        levelTex = Texture(device: device, name: "assets/level1", ext: "png", factor: 5)
         
         commandQueue = device.makeCommandQueue()
         
@@ -81,20 +86,29 @@ class Renderer: NSObject, MTKViewDelegate {
 //            }
 //        }
         
+        SquareRenderer.renderTex(tex: levelTex, x: 0, y: 0, w: 1, h: 1, encoder: renderEncoder!)
         let dx: Float = 1.0 / Float(gridW)
         let dy: Float = 1.0 / Float(gridH)
         for ix in 0..<gridW {
             for iy in 0..<gridH {
                 let fx = Float(ix)
                 let fy = Float(iy)
-                if levelTiles[ix][iy] == WALL {
-                    SquareRenderer.render(x: fx*dx, y: fy*dy, w: dx, h: dy, red: 0, green: 0, blue: 1, encoder: renderEncoder!)
+//                if levelTiles[ix][iy] == WALL {
+//                    SquareRenderer.render(x: fx*dx, y: fy*dy, w: dx, h: dy, red: 0, green: 0, blue: 1, encoder: renderEncoder!)
+//                }
+                if levelDots[ix][iy] {
+                    let m:Float=0.5-0.5*dotSize
+                    SquareRenderer.render(x: (fx+m)*dx, y: (fy+m)*dy, w: dx*(1-2*m), h: dy*(1-2*m), red: 1, green: 1, blue: 1, encoder: renderEncoder!)
+                }
+                if levelPowerDots[ix][iy] {
+                    let m:Float=0.5-0.5*powerDotSize
+                    SquareRenderer.render(x: (fx+m)*dx, y: (fy+m)*dy, w: dx*(1-2*m), h: dy*(1-2*m), red: 1, green: 1, blue: 1, encoder: renderEncoder!)
                 }
             }
         }
         
         player.render(renderEncoder!)
-        player.update()
+        player.update(blinky: blinky, pinky: pinky, inky: inky, clyde: clyde)
         
         blinky.render(renderEncoder!)
         blinky.update(player, blinky)
@@ -107,6 +121,9 @@ class Renderer: NSObject, MTKViewDelegate {
         
         clyde.render(renderEncoder!)
         clyde.update(player, blinky)
+        
+        
+        //TODO: Dots, power dots, pacman die, pacman win, textures, animations, logo (set to the logo extracted in the python pygame pacman project, logo.png), score, UI menus
         
         renderEncoder?.endEncoding()
         commandBuffer?.present(drawable)

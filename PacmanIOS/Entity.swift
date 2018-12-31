@@ -32,15 +32,7 @@ class Entity {
         nextDir = .l
     }
     
-    func getColor() -> [Float] {
-        return [1,1,1]
-    }
-    
     func render(_ encoder: MTLRenderCommandEncoder){
-        let dx: Float = 1.0/Float(gridW)
-        let dy: Float = 1.0/Float(gridH)
-        let col: [Float] = getColor()
-        SquareRenderer.render(x: (Float(gx)+offx)*dx, y: (Float(gy)+offy)*dy, w: dx, h: dy, red: col[0], green: col[1], blue: col[2], encoder: encoder)
     }
     
     func canMoveInDir(_ d: Dir) -> Bool {

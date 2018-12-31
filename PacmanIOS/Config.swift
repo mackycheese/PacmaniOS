@@ -8,6 +8,15 @@
 
 import Foundation
 
+let playerAnimSpeed: Float = 0.2
+let ghostAnimSpeed: Float = 0.2
+let ghostScaredAnimSpeed: Float = 0.1
+
+let spriteExtra: Float = 0.3
+
+let dotSize: Float = 0.2
+let powerDotSize: Float = 0.4
+
 let speedScale: Float = 0.05
 
 let playerSpeed: Float = 2 * speedScale

@@ -7,46 +7,58 @@
 //
 
 import Foundation
+import Metal
 
 class Ghost: Entity {
     //player: 15,17
     //ghost: 12,13
     //ghost exit: 12,11
     
-    override init() {
+    init(device: MTLDevice) {
         super.init()
         gx = 11
         gy = 15
         speed = ghostNormalSpeed
         enterTimer = getEnterTime()
+        anim=Animator(device: device, name: getName(), numFrames: 2, speed: ghostAnimSpeed)
+        animWhite=Animator(device: device, name: "ghostwhite", numFrames: 2, speed: ghostScaredAnimSpeed)
+        animBlue=Animator(device: device, name: "ghostblue", numFrames: 2, speed: ghostScaredAnimSpeed)
     }
+    
+    var anim: Animator!
+    var animWhite: Animator!
+    var animBlue: Animator!
     
     var enterTimer: Int! = 0
     var scared: Bool! = false
     var scaredTimer: Int! = 0
     var inGhostHouse: Bool! = true
     
+    override func render(_ encoder: MTLRenderCommandEncoder) {
+        var anim = self.anim
+        if scared {
+            if scaredTimer < ghostFlashTime && (scaredTimer/ghostFlashSpeed)%2==0{
+                anim=self.animWhite
+            }else{
+                anim=self.animBlue
+            }
+        }
+        anim?.render(gx: gx, gy: gy, offx: offx, offy: offy, dir: dir, encoder: encoder)
+        self.anim.step()
+        self.animBlue.step()
+        self.animWhite.step()
+    }
+    
+    func getName() -> String {
+        return "duuuhhh!"
+    }
+    
     func getEnterTime() -> Int {
         return 0
     }
     
-    func getGhostColor() -> [Float] {
-        return [1,1,1]
-    }
-    
     func getTarget(_ player: Player, _ blinky: Ghost) -> [Int] {
         return [0,0]
-    }
-    
-    override func getColor() -> [Float] {
-        if scared {
-            if scaredTimer<ghostFlashTime && (scaredTimer/ghostFlashSpeed)%2 == 0 {
-                return [1,1,1]
-            } else {
-                return [0,0,1]
-            }
-        }
-        return getGhostColor()
     }
     
     func reset(){

@@ -14,8 +14,8 @@ class GhostBlinky: Ghost {
         return ghostEnterTimeBlinky
     }
     
-    override func getGhostColor() -> [Float] {
-        return [1,0,0]
+    override func getName() -> String {
+        return "blinky"
     }
     
     override func getTarget(_ player: Player, _ blinky: Ghost) -> [Int] {
