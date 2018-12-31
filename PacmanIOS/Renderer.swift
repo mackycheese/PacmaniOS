@@ -144,6 +144,7 @@ class Renderer: NSObject, MTKViewDelegate {
         if levelLives <= 0 && pauseTimer < 0 {
             initLevel()
             player.justDied=false
+            player.onInitLevel()
             pauseTimer = gameStartPause
         }
         

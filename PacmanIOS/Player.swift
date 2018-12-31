@@ -18,7 +18,7 @@ class Player: Entity {
         speed = playerSpeed
         bonusAmount = 0
         anim=Animator(device: device, name: "pacman", numFrames: 2, speed: playerAnimSpeed)
-        animDie=Animator(device: device, name: "pacman-die", numFrames: 12, speed: 12/Float(gameLosePause), nodir: true)
+        animDie=Animator(device: device, name: "pacman-die", numFrames: 12, speed: 12/Float(gameDiePause), nodir: true)
     }
     
     var anim: Animator!
@@ -26,10 +26,15 @@ class Player: Entity {
     var bonusAmount: Int!
     var justDied: Bool! = false
     
-    func die(blinky: Ghost, pinky: Ghost, inky: Ghost, clyde: Ghost){
+    func onInitLevel(){
         gx=13
         gy=23
-        //TODO: Reset position after death animation
+        offx=0
+        offy=0
+    }
+    
+    func die(blinky: Ghost, pinky: Ghost, inky: Ghost, clyde: Ghost){
+        //TODO: Reset position after death animation, only do death animation if
         offx=0
         offy=0
         blinky.reset()
@@ -49,7 +54,17 @@ class Player: Entity {
     }
     
     func update(blinky: Ghost, pinky: Ghost, inky: Ghost, clyde: Ghost){
-        justDied=false
+        if Int(Float(animDie.frame)*animDie.speed) >= animDie.numFrames && justDied {
+            gx=13
+            gy=23
+            offx=0
+            offy=0
+        }
+        if justDied {
+//            gx=13
+//            gy=23
+            justDied=false
+        }
         anim.step()
         if canMoveInDir(nextDir)&&offx==0&&offy==0{
             dir=nextDir
@@ -97,8 +112,8 @@ class Player: Entity {
                     levelLives-=1
                     justDied=true
                     if levelLives <= 0 {
-                        pauseTimer = gameLosePause
-                        animDie.speed=12/Float(gameLosePause)
+                        pauseTimer = gameDiePause
+                        animDie.speed=12/Float(gameDiePause)
                         animDie.frame=0
                     } else {
                         pauseTimer = gameStartPause
