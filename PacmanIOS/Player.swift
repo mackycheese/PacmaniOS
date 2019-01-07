@@ -78,6 +78,24 @@ class Player: Entity {
         if canMoveInDir(nextDir)&&offx==0&&offy==0{
             dir=nextDir
         }
+        if fruitSpawned && gx == 13 && gy == 17 {
+            if fruitNumber > 8 {
+                fruitNumber = 8
+            }
+            levelScore+=fruitScores[fruitNumber-1]
+            levelLives+=1
+            fruitNumber+=1
+            fruitSpawned = false
+            fruitTimer = fruitInterval
+        } else {
+            
+            if fruitTimer <= 0 {
+                fruitSpawned = true
+            } else {
+                fruitTimer-=1
+            }
+            
+        }
         var possibleToWin: Bool = false
         if levelDots[gx][gy] {
             levelDots[gx][gy] = false
@@ -107,6 +125,8 @@ class Player: Entity {
                 initLevel(resetScore: false)
                 die(blinky: blinky, pinky: pinky, inky: inky, clyde: clyde)
                 pauseTimer = gameStartPause
+                gx = 13
+                gy = 23
             }
         }
         let ghosts: [Ghost] = [blinky, pinky, inky, clyde]

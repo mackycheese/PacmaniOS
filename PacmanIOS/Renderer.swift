@@ -24,6 +24,8 @@ class Renderer: NSObject, MTKViewDelegate {
     
     var motionManager: CMMotionManager!
     
+    var fruitTextures: [MetalTexture] = []
+    
     var scoreText: MetalText!
     
     let startTime = NSDate().timeIntervalSince1970
@@ -41,6 +43,7 @@ class Renderer: NSObject, MTKViewDelegate {
     var levelTex: MetalTexture!
     var lifeTex: MetalTexture!
     
+    var btnReset: MetalButton!
     var btnTiltToTurn: MetalButton!
     
     
@@ -51,6 +54,10 @@ class Renderer: NSObject, MTKViewDelegate {
         
         self.device = metalKitView.device!
         initLevel(resetScore: true)
+        
+        for i in 1...8 {
+            fruitTextures.append(MetalTexture(device: device, name: "assets/fruit-"+String(i), ext: "png"))
+        }
         
         motionManager = CMMotionManager()
         
@@ -68,10 +75,15 @@ class Renderer: NSObject, MTKViewDelegate {
         inky = GhostInky(device: device)
         clyde = GhostClyde(device: device)
         
+        btnReset=MetalButton(device: device)
+        btnReset.setText(device: device, "RESET")
+        btnReset.setState(on: false)
+        btnReset.setBounds(x: 0, y: uiSize*4.1, w: uiSize, h: uiSize)
+        
         btnTiltToTurn=MetalButton(device: device)
         btnTiltToTurn.setText(device: device, "YOU SHOULD NOT SEE THIS TEXT")
         btnTiltToTurn.setState(on: false)
-        btnTiltToTurn.setBounds(x: 0, y: 0, w: uiSize, h: uiSize)
+        btnTiltToTurn.setBounds(x: 0, y: uiSize*3, w: uiSize, h: uiSize)
         
         scoreText = MetalText(device: device)
         
@@ -176,6 +188,16 @@ class Renderer: NSObject, MTKViewDelegate {
         
         clyde.render(renderEncoder!)
         
+        if fruitSpawned {
+            let dx:Float=1.0/Float(gridW)
+            let dy:Float=1.0/Float(gridH)
+            if fruitNumber > 8 {
+                fruitNumber = 8
+            }
+            print("Fruit number: \(fruitNumber)")
+            SquareRenderer.renderTex(tex: fruitTextures[fruitNumber-1], x: dx*(13-spriteExtra), y: dy*(17-spriteExtra), w: dx*(1+2*spriteExtra), h: dy*(1+2*spriteExtra), encoder: renderEncoder!)
+        }
+        
         scoreText.setText(device: device, s: "SCORE "+String(levelScore))
         scoreText.render(x: -1, y: 1-textSize, w: textSize, h: textSize, encoder: renderEncoder!)
         
@@ -210,6 +232,7 @@ class Renderer: NSObject, MTKViewDelegate {
         }
         
 
+        btnReset.render(encoder: renderEncoder!)
         btnTiltToTurn.render(encoder: renderEncoder!)
         
         if btnTiltToTurn.isOn {
@@ -245,6 +268,10 @@ class Renderer: NSObject, MTKViewDelegate {
     func tap(x: Float, y: Float) {
         if btnTiltToTurn.containsPoint(x, y) {
             btnTiltToTurn.toggle()
+        }
+        if btnReset.containsPoint(x, y) {
+            initLevel(resetScore: true)
+            player.onInitLevel()
         }
     }
     

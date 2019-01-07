@@ -55,7 +55,7 @@ class MetalButton {
         if isOn {
             col=colOn
         }
-        SquareRenderer.render(x: x, y: y, w: Float(str.count)*w, h: -h, red: col[0], green: col[1], blue: col[2], encoder: encoder)
+        SquareRenderer.render(x: x, y: -y, w: Float(str.count)*w, h: -h, red: col[0], green: col[1], blue: col[2], encoder: encoder)
         text.render(x: x*2-1, y: y*2+1, w: w*2, h: h*2, encoder: encoder)
     }
     

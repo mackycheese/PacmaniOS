@@ -23,6 +23,19 @@ let timeScatter: Int = 50
 
 let uiSize: Float = 0.05
 
+let fruitInterval: Int = 1000
+
+let fruitScores: [Int] = [
+    100,
+    300,
+    500,
+    700,
+    1000,
+    2000,
+    3000,
+    5000
+]
+
 let playerAnimSpeed: Float = 0.2
 let ghostAnimSpeed: Float = 0.2
 let ghostScaredAnimSpeed: Float = 0.1

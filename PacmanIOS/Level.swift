@@ -81,14 +81,20 @@ func initLevel(resetScore: Bool){
     }
     if resetScore {
         levelScore = 0
+        fruitNumber = 1
+        levelLives = 3
     }
     pauseTimer = gameStartPause
-    levelLives = 3
     behaviourTimer = timeChase
     scatterMode = false
+    fruitTimer = fruitInterval
+    fruitSpawned = false
 }
 
 var pauseTimer: Int = 0
 var levelLives: Int = 0
+var fruitNumber: Int = 1
 var behaviourTimer: Int = 0
 var scatterMode: Bool = false
+var fruitSpawned: Bool = false
+var fruitTimer: Int = fruitInterval

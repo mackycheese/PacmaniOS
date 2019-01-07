@@ -15,6 +15,10 @@ class GameViewController: UIViewController {
     var renderer: Renderer!
     var mtkView: MTKView!
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
+    
     @objc public func onSwipe(_ sender: UISwipeGestureRecognizer){
         print("Direction: \(sender.direction)")
         switch sender.direction {
